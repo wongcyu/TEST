@@ -9,6 +9,29 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
 
 ```{r}
+#Essential libraries 
+library(maptools)
+library(RColorBrewer)
+library(classInt)
+library(OpenStreetMap)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+library(tidyverse)
+library(shinyjs)
+library(raster)
+library(dismo)
+library(leaflet)
+library(ggplot2)
+```
+
+
+
+```{r}
 #Import Liverpool Shapefile
 Liverpool <- read_shape("CDRC AHAH 2016/shapefiles/E08000012.shp")
 #Import Liverpool AHAH Data
@@ -39,14 +62,13 @@ LiverpoolAHAH <- LiverpoolAHAH %>% st_transform(27700)
 #Plot the data
 tmap_mode("view")
 
-
 tm_shape(LiverpoolAHAH) + 
-  tm_fill("no2", n=5,style = "quantile", palette = "Reds",title = "Annual mean NO2 (µgm3)") +
+  tm_fill("no2", n=5,style = "quantile", palette = "YlOrRd",title = "Annual mean NO2 (µgm3)") +
   tm_shape(AADF.SP) + 
   tm_bubbles(size = "AllMotorVehicles", col = "AllMotorVehicles", palette = "Purples", scale= 0.9,alpha = 1,style = "quantile", legend.size.show = FALSE, title.col = "All motor-vehicles per day",border.alpha = 0.1) +
-  tm_layout(legend.text.size = 1, legend.title.size = 1.1, frame = FALSE) +
+  tm_layout(legend.text.size = 1, legend.title.size = 1.1, frame = FALSE) #+
 #Add north arrow
-tm_compass()
+#tm_compass()
 ```
 
 
