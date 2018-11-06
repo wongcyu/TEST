@@ -10,7 +10,7 @@ output:
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
-[This is an GUI-based map using ArcGIS.](Assignment 1_GIS.jpg)
+
 
 ```{r}
 #Essential libraries 
@@ -55,7 +55,8 @@ ogr2ogr(
 )
 
 Liverpool_ward <- readOGR("Liv_ward.geojson", stringsAsFactors = FALSE)
-summary(Liverpool_ward)
+#Check the component of Liverpool ward file
+#summary(Liverpool_ward)
 ```
 
 
@@ -71,7 +72,6 @@ LiverpoolAHAH <- Liverpool %>% left_join(LiverpoolData, by = c("lsoa11cd" = "lso
 #Import AADF data
 AADF <- read_csv("Liverpool.csv")
 
-
 #Select the latest data
 #AADF_2017 <- rownames(AADF[AADF$AADFYear== "2000",])
 AADF_2017 <- AADF[2830:2999,c(1,2,3,4,5,6,9,10,27)]
@@ -80,11 +80,7 @@ AADF_2017 <- AADF[2830:2999,c(1,2,3,4,5,6,9,10,27)]
 AADF.SP <- st_as_sf(AADF_2017, coords = c("Easting", "Northing"), crs = 27700)
 
 #Reproject the Liverpool shp
-UKBNG <- "+init=epsg:27700"
-#proj4string(Liverpool) <- CRS(UKBNG)
-Liverpool <- Liverpool %>% st_transform(27700)
 LiverpoolAHAH <- LiverpoolAHAH %>% st_transform(27700)
-
 
 #Plot the data
 tmap_mode("plot")
@@ -106,9 +102,22 @@ tm_shape(Liverpool_ward) +
 ```
 
 #Commentary 
+The following is the commentary for [GIS generated Map](GIS_MAP.jpg) and [R generated Map](R_MAP.jpg).
 
-[Assessment](Assignment 1_GIS.jpg)
+###Pros and Cons of GUI versus R 
+In general, GIS is more a mapping software with built-in statistical functions while R is more a statistical software with mapping functions with the help of external packages. For generating maps, the GUI based is more user-friendly while R requires users to have prerequisite knowledge of R programming language. Both GIS and R enable spatial and statistical analysis. Vector data in GIS can be easily manipulated in attribute tables with the vector drawing and editing functionalities. Also, many well-structured geoprocessing plugins are available in GIS to undertake further advanced spatial analysis, such as spatial relationships, data interpolation, distance calculation, raster calculation, zonal statistics and hot-spot analysis. However, when requiring basemap for map generation, the function of “Add Basemap” in GIS make it extremely easy for user to choose different types of maps as their background layer including but not limited to OpenStreetMap and Google Maps, while R requires user to have the key to access API service. 
 
+###Assessment of source of data in map generation
+The focus area is Liverpool and there are three data sources being employed in generating the maps. The first is the Access to Healthy Assets & Hazard Index data at the LSOA level from the Consumer Data Research Centre in the form of polygon shapefile and csv. The second is the Annual Average Daily Flow (AADF) from the Department for Transport in the form of csv. It is time series data ranging from 2000 to 2017 and if possible, it could be visualized interactively showing the change over these year. The third is the boundary data of Liverpool electoral wards from the INSPIRE in the form of WFS. 
+
+###Good cartographic practice and the assessment of generated maps 
+When comparing maps generated in GIS and R, GIS-generated map is more aesthetically pleasing than R-generated map as GIS provides a variety of colour palette and icons which R does not have. Moreover, when comparing the labelling of both maps the labelled ward name of R-map overlapped with one another, creating confusion to the reader, while GIS-map is much better. As mentioned previously, the difficulty in accessing google API also makes R-map without raster basemap. 
+
+###Review of workflow 
+The summary of workflow in GIS and R can be found [Here](Summary of workflow.jpg). As a non-mapping software, R has to install and initialise all the external required packages before working on the data. This is different in GIS, as it already has built-in tools for processing the data.
+
+###Other Considerations
+Notably, Modifiable Areal Unit Problem (MAUP) may appear as the scale effect or aggregation/ zonation effects when summing up attribute values from the sub-zones. Since MAUP will work both on vector and raster data, therefore it is essential to carefully explore the aggregated data. Moreover, when plotting data onto the map it is also possible to examine whether there exists correlations between different datasets.
 
 
 
