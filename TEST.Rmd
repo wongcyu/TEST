@@ -1,14 +1,16 @@
 ---
-title: "TEST file for assignment 1"
+title: "Reproducible R Markdown for Assignment 1"
 author: "Chengyu Wang"
+date: 06/11/2018
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+[This is an GUI-based map using ArcGIS.](Assignment 1_GIS.jpg)
 
 ```{r}
 #Essential libraries 
@@ -31,6 +33,7 @@ library(leaflet)
 library(ggplot2)
 ```
 
+The following is the code for importing WFS.
 ```{r}
 #Library for reading WFS
 library(gdalUtils)
@@ -87,13 +90,13 @@ LiverpoolAHAH <- LiverpoolAHAH %>% st_transform(27700)
 tmap_mode("plot")
 
 tm_shape(LiverpoolAHAH) + 
-  tm_fill("no2", n=5, style = "quantile", palette = "YlOrRd",title = "Annual mean NO2 (µgm3)") +
+  tm_fill("no2", n=5, style = "quantile", palette = "Reds",title = "Annual mean NO2 (µgm3)") +
 tm_shape(AADF.SP) + 
   tm_bubbles(size = "AllMotorVehicles", col = "AllMotorVehicles", palette = "Purples", scale= 0.9,alpha = 1,style = "quantile", legend.size.show = FALSE, title.col = "All motor-vehicles per day",border.alpha = 0.1) +
   tm_layout(title = "Traffic Count and Air Pollution in Liverpool",scale = 0.8, legend.text.size = 1, legend.title.size = 1.1, frame = FALSE,legend.outside = TRUE) +
 tm_shape(Liverpool_ward) +
   tm_borders(col ="white",alpha = 0.5) +
-  tm_text("ward", size=0.4, col="black", ) +
+  tm_text("ward", size=0.4, col="darkseagreen3",fontface = 2 ) +
   tm_legend(position = c("right", "bottom"), 
 	frame = TRUE) +
   tm_scale_bar(position = c("left", "bottom"))+
@@ -102,11 +105,10 @@ tm_shape(Liverpool_ward) +
 
 ```
 
+#Commentary 
+
+[This is an GUI-based map using ArcGIS.](Assignment 1_GIS.jpg)
 
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
