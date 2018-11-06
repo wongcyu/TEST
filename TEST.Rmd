@@ -1,7 +1,9 @@
 ---
 title: "TEST file for assignment 1"
 author: "Chengyu Wang"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
@@ -29,6 +31,29 @@ library(leaflet)
 library(ggplot2)
 ```
 
+```{r}
+#Library for reading WFS
+library(gdalUtils)
+#Path to Liverpool ward file
+wfs <- "WFS:http://inspire.misoportal.com/geoserver/liverpool_direct_limited_ward/wfs?service=wfs&version=2.0.0&request=GetCapabilities"
+
+info <- ogrinfo(wfs, so = TRUE)
+cat(info, sep = "\n")
+
+
+ogr2ogr(
+  src_datasource_name = wfs,           # the input source
+  layer = "liverpool_direct_limited_ward:ward_polygon",                    # the layer from the input
+  dst_datasource_name = "Liv_ward.geojson",  # the target file
+  f = "geojson",                           # the target format
+  # the bounding box
+  t_srs = "EPSG:27700",                    # the coordinate reference system
+  verbose = TRUE
+)
+
+Liverpool_ward <- readOGR("Liv_ward.geojson", stringsAsFactors = FALSE)
+summary(Liverpool_ward)
+```
 
 
 ```{r}
@@ -43,7 +68,6 @@ LiverpoolAHAH <- Liverpool %>% left_join(LiverpoolData, by = c("lsoa11cd" = "lso
 #Import AADF data
 AADF <- read_csv("Liverpool.csv")
 
-#2830 2999
 
 #Select the latest data
 #AADF_2017 <- rownames(AADF[AADF$AADFYear== "2000",])
@@ -60,21 +84,25 @@ LiverpoolAHAH <- LiverpoolAHAH %>% st_transform(27700)
 
 
 #Plot the data
-tmap_mode("view")
+tmap_mode("plot")
 
 tm_shape(LiverpoolAHAH) + 
-  tm_fill("no2", n=5,style = "quantile", palette = "YlOrRd",title = "Annual mean NO2 (µgm3)") +
-  tm_shape(AADF.SP) + 
+  tm_fill("no2", n=5, style = "quantile", palette = "YlOrRd",title = "Annual mean NO2 (µgm3)") +
+tm_shape(AADF.SP) + 
   tm_bubbles(size = "AllMotorVehicles", col = "AllMotorVehicles", palette = "Purples", scale= 0.9,alpha = 1,style = "quantile", legend.size.show = FALSE, title.col = "All motor-vehicles per day",border.alpha = 0.1) +
-  tm_layout(legend.text.size = 1, legend.title.size = 1.1, frame = FALSE) #+
-#Add north arrow
-#tm_compass()
+  tm_layout(title = "Traffic Count and Air Pollution in Liverpool",scale = 0.8, legend.text.size = 1, legend.title.size = 1.1, frame = FALSE,legend.outside = TRUE) +
+tm_shape(Liverpool_ward) +
+  tm_borders(col ="white",alpha = 0.5) +
+  tm_text("ward", size=0.4, col="black", ) +
+  tm_legend(position = c("right", "bottom"), 
+	frame = TRUE) +
+  tm_scale_bar(position = c("left", "bottom"))+
+  #Add north arrow
+  tm_compass(position = c("right", "top"))
+
 ```
 
 
-```{r}
-AADF <- read.csv("London.csv")
-```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
