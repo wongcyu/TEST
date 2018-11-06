@@ -117,7 +117,8 @@ When comparing maps generated in GIS and R, GIS-generated map is more aesthetica
 The summary of workflow in GIS and R can be found [Here](Summary of workflow.jpg). As a non-mapping software, R has to install and initialise all the external required packages before working on the data. This is different in GIS, as it already has built-in tools for processing the data.
 
 ###Other Considerations
-Notably, Modifiable Areal Unit Problem (MAUP) may appear as the scale effect or aggregation/ zonation effects when summing up attribute values from the sub-zones. Since MAUP will work both on vector and raster data, therefore it is essential to carefully explore the aggregated data. Moreover, when plotting data onto the map it is also possible to examine whether there exists correlations between different datasets.
+Notably, Modifiable Areal Unit Problem (MAUP) may appear as the scale effect or aggregation/ zonation effects when summing up attribute values from the sub-zones. Since MAUP will work both on vector and raster data and there are several layers of administrative geography in UK, therefore it is essential to carefully explore the aggregated data. Moreover, the intervals of represented traffic counts data in GIS and R differ from each other, though both of them are use the same probability distribution of ‘quantile’. Additionally, when plotting data onto the map it is also possible to examine whether there exists correlations between different datasets.
+
 
 
 
