@@ -1,5 +1,5 @@
 ---
-title: "Reproducible R Markdown for Assignment 1"
+title: "Reproducible R Markdown for Assessment 1"
 author: "Chengyu Wang"
 date: 06/11/2018
 output:
@@ -107,7 +107,7 @@ tm_shape(Liverpool_ward) +
 
 #Commentary 
 
-[This is an GUI-based map using ArcGIS.](Assignment 1_GIS.jpg)
+[Assessment](Assignment 1_GIS.jpg)
 
 
 
